@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="refresh" content="300" />
+<title>Produksjonstavle</title>
+<style>
+:root {
+--bg: #0f1115;
+--panel: #171a21;
+--grid: #2a2f3a;
+--text: #f4f6fb;
+--muted: #9ea7b8;
+--planlagt: #9ca3af;
+--pabegynt: #4da3ff;
+--forsinket: #ff5b5b;
+--ferdig: #47c97d;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+margin: 0;
+padding: 0;
+width: 100%;
+height: 100%;
+background: var(--bg);
+color: var(--text);
+font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+}
+
+.screen {
+min-height: 100vh;
+padding: 1.2rem;
+display: flex;
+flex-direction: column;
+gap: 1rem;
+}
+
+.header {
+display: flex;
+justify-content: space-between;
+align-items: baseline;
+gap: 1rem;
+flex-wrap: wrap;
+}
+
+.title {
+font-size: clamp(1.8rem, 2.6vw, 3rem);
+font-weight: 800;
+letter-spacing: 0.02em;
+}
+
+.meta {
+font-size: clamp(1rem, 1.3vw, 1.4rem);
+color: var(--muted);
+font-weight: 600;
+}
+
+.board {
+flex: 1;
+background: var(--panel);
+border: 1px solid var(--grid);
+border-radius: 12px;
+overflow: auto;
+}
+
+table {
+width: 100%;
+border-collapse: collapse;
+table-layout: fixed;
+}
+
+th, td {
+border: 1px solid var(--grid);
+vertical-align: top;
+padding: 0.65rem 0.55rem;
+font-size: clamp(0.88rem, 1.03vw, 1.15rem);
+line-height: 1.35;
+white-space: pre-wrap;
+word-break: break-word;
+}
+
+th {
+position: sticky;
+top: 0;
+z-index: 2;
+background: #1e2430;
+text-align: left;
+font-size: clamp(0.95rem, 1.15vw, 1.25rem);
+font-weight: 800;
+letter-spacing: 0.01em;
+}
+
+.assignee {
+width: 18ch;
+font-weight: 700;
+background: #151a23;
+position: sticky;
+left: 0;
+z-index: 1;
+}
+
+.task-line { margin-bottom: 0.28rem; }
+.task-line:last-child { margin-bottom: 0; }
+.project-line {
+font-size: 0.92em;
+color: var(--muted);
+font-weight: 500;
+}
+.task-title {
+font-weight: 700;
+color: var(--text);
+}
+.empty { color: #6f7685; }
+
+.status { font-weight: 700; }
+.status-planlagt { color: var(--planlagt); }
+.status-pabegynt { color: var(--pabegynt); }
+.status-forsinket { color: var(--forsinket); }
+.status-ferdig { color: var(--ferdig); }
+.status-landax { color: #d8deea; }
+.status-sep { color: var(--muted); }
+
+@media (max-width: 1200px) {
+.screen { padding: 0.8rem; }
+th, td { padding: 0.45rem; }
+.assignee { width: 14ch; }
+}
+</style>
+</head>
+<body>
+<div class="screen">
+<div class="header">
+<div class="title">Produksjonstavle Ukeplan</div>
+<div class="meta">fredag 22.05.2026 &middot; Uke 21 &middot; Oppdateres hvert 30. minutt</div>
+</div>
+
+<div class="board">
+<table>
+<thead>
+<tr>
+<th>Person</th>
+<th>Mandag</th>
+<th>Tirsdag</th>
+<th>Onsdag</th>
+<th>Torsdag</th>
+<th>Fredag</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="assignee">Anders Haugen</td>
+<td><div class='empty'>-</div></td>
+<td><div class='empty'>-</div></td>
+<td><div class='task-line task-title'>Lage st&#248;tter til produksjon (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line task-title'>Lage st&#248;tter til produksjon (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line task-title'>Lage st&#248;tter til produksjon (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+</tr>
+<tr>
+<td class="assignee">Geir Morten Nyg&#229;rd</td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise trapp (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise trapp (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise trapp (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise trapp (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise trapp (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+</tr>
+<tr>
+<td class="assignee">Lasse Aune</td>
+<td><div class='empty'>-</div></td>
+<td><div class='empty'>-</div></td>
+<td><div class='task-line task-title'>Lage st&#248;tter til produksjon (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line task-title'>Lage st&#248;tter til produksjon (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line task-title'>Lage st&#248;tter til produksjon (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+</tr>
+<tr>
+<td class="assignee">Miriam Edvardsen</td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+</tr>
+<tr>
+<td class="assignee">Nicole Angelina R&#248;yset</td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>Sveise samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+</tr>
+<tr>
+<td class="assignee">Roy Nilsen</td>
+<td><div class='empty'>-</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>R&#248;rlegging p&#229; utside fram til samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>R&#248;rlegging p&#229; utside fram til samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>R&#248;rlegging p&#229; utside fram til samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line project-line'>752547 - MK201 trommelfilter produksjon</div><div class='task-line task-title'>R&#248;rlegging p&#229; utside fram til samlestokk (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+</tr>
+<tr>
+<td class="assignee">Sindre Gr&#248;tan</td>
+<td><div class='empty'>-</div></td>
+<td><div class='empty'>-</div></td>
+<td><div class='task-line task-title'>Lage st&#248;tter til produksjon (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line task-title'>Lage st&#248;tter til produksjon (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+<td><div class='task-line task-title'>Lage st&#248;tter til produksjon (<span class='status-group'><span class='status status-pabegynt'>P&aring;begynt</span></span>)</div></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</body>
+</html>
