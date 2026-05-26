@@ -213,7 +213,7 @@ th, td { padding: 0.45rem; }
 <div class="screen">
 <div class="header">
 <div class="title">Produksjonstavle Ukeplan</div>
-<div class="meta">tirsdag 26.05.2026 &middot; Uke 22 &middot; Sist oppdatert: 15:38<span id="page-indicator" style="display:none"></span></div>
+<div class="meta">tirsdag 26.05.2026 &middot; Uke 22 &middot; Sist oppdatert: 15:48<span id="page-indicator" style="display:none"></span></div>
 </div>
 
 <div class="board">
@@ -401,10 +401,10 @@ th, td { padding: 0.45rem; }
         if (allRows.length === 0) return;
         allRows.forEach(function (r) { r.style.display = ""; r.style.height = ""; });
 
-        // 3. Compute available height and rows-per-page
+        // 3. Compute rows-per-page: max 7 persons per page
+        const MAX_ROWS_PER_PAGE = 7;
         const available = computeAvailableHeight();
-        const maxRowsPerPage = Math.max(1, Math.floor(available / MIN_ROW_HEIGHT));
-        const rowsPerPage = allRows.length <= maxRowsPerPage ? allRows.length : maxRowsPerPage;
+        const rowsPerPage = Math.min(MAX_ROWS_PER_PAGE, allRows.length);
         const rowHeight = Math.max(MIN_ROW_HEIGHT, Math.min(MAX_ROW_HEIGHT, available / rowsPerPage));
 
         // 4. Set height on ALL rows so hidden rows maintain size when shown
@@ -418,7 +418,9 @@ th, td { padding: 0.45rem; }
         showPage(currentPage);
         startPageTimer();
 
-        console.debug("Rows:", allRows.length, "| PerSide:", rowsPerPage, "| Sider:", pages.length, "| RadHoyde:", Math.round(rowHeight), "| Tilgjengelig:", Math.round(available));
+        console.debug("Rows:", allRows.length);
+        console.debug("Rows per page:", rowsPerPage);
+        console.debug("Pages:", pages.length);
     }
 
     window.addEventListener("load", update);
