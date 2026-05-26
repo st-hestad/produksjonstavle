@@ -213,7 +213,7 @@ th, td { padding: 0.45rem; }
 <div class="screen">
 <div class="header">
 <div class="title">Produksjonstavle Ukeplan</div>
-<div class="meta">tirsdag 26.05.2026 &middot; Uke 22 &middot; Sist oppdatert: 15:18</div>
+<div class="meta">tirsdag 26.05.2026 &middot; Uke 22 &middot; Sist oppdatert: 15:38<span id="page-indicator" style="display:none"></span></div>
 </div>
 
 <div class="board">
@@ -300,6 +300,13 @@ th, td { padding: 0.45rem; }
 <script>
 (function () {
     const SCALE_CLASSES = ["compact", "dense"];
+    const PAGE_INTERVAL_MS = 12000;
+    const MIN_ROW_HEIGHT = 55;
+    const MAX_ROW_HEIGHT = 160;
+
+    let currentPage = 0;
+    let pages = [];
+    let pageTimer = null;
 
     function setMode(mode) {
         document.body.classList.remove(...SCALE_CLASSES);
@@ -314,15 +321,11 @@ th, td { padding: 0.45rem; }
         return Math.ceil(screen.getBoundingClientRect().height) <= window.innerHeight;
     }
 
-    function applyDynamicRowHeights() {
-        const rows = document.querySelectorAll("tbody tr");
-        if (!rows || rows.length === 0) return;
-
+    function computeAvailableHeight() {
         const screen = document.querySelector(".screen");
         const header = document.querySelector(".header");
         const board = document.querySelector(".board");
         const tableHead = document.querySelector("thead");
-
         const viewportHeight = window.innerHeight;
         const screenStyles = screen ? window.getComputedStyle(screen) : null;
         const paddingY = screenStyles
@@ -333,28 +336,55 @@ th, td { padding: 0.45rem; }
         const boardPaddingY = board
             ? ((parseFloat(window.getComputedStyle(board).paddingTop) || 0) + (parseFloat(window.getComputedStyle(board).paddingBottom) || 0))
             : 0;
-
-        let availableHeight = viewportHeight - headerHeight - tableHeadHeight - paddingY - boardPaddingY;
-
-        if (availableHeight <= 0 && board) {
-            availableHeight = board.clientHeight - tableHeadHeight;
+        let available = viewportHeight - headerHeight - tableHeadHeight - paddingY - boardPaddingY;
+        if (available <= 0 && board) {
+            available = board.clientHeight - tableHeadHeight;
         }
-
-        const calculatedRowHeight = availableHeight / rows.length;
-        const rowHeight = Math.max(55, Math.min(160, calculatedRowHeight));
-
-        rows.forEach((row) => {
-            row.style.height = rowHeight + "px";
-        });
-
-        console.debug("Rows:", rows.length);
-        console.debug("Available:", Math.round(availableHeight));
-        console.debug("Calculated row height:", Math.round(rowHeight));
+        return available;
     }
 
-    function updateScaleMode() {
-        let mode = "normal";
+    function buildPages(allRows, rowsPerPage) {
+        const result = [];
+        for (let i = 0; i < allRows.length; i += rowsPerPage) {
+            result.push(allRows.slice(i, i + rowsPerPage));
+        }
+        return result;
+    }
 
+    function updateIndicator(current, total) {
+        const indicator = document.getElementById("page-indicator");
+        if (!indicator) return;
+        if (total <= 1) {
+            indicator.textContent = "";
+            indicator.style.display = "none";
+        } else {
+            indicator.textContent = " \u00b7 Side " + current + "/" + total;
+            indicator.style.display = "";
+        }
+    }
+
+    function showPage(pageIndex) {
+        if (pages.length === 0) return;
+        const allRows = document.querySelectorAll("tbody tr");
+        allRows.forEach(function (r) { r.style.display = "none"; });
+        const page = pages[pageIndex];
+        page.forEach(function (r) { r.style.display = ""; });
+        updateIndicator(pageIndex + 1, pages.length);
+        console.debug("Pagination: side", pageIndex + 1, "av", pages.length);
+    }
+
+    function startPageTimer() {
+        if (pageTimer) clearInterval(pageTimer);
+        if (pages.length <= 1) return;
+        pageTimer = setInterval(function () {
+            currentPage = (currentPage + 1) % pages.length;
+            showPage(currentPage);
+        }, PAGE_INTERVAL_MS);
+    }
+
+    function update() {
+        // 1. Apply best scale mode
+        let mode = "normal";
         setMode("normal");
         if (!fitsViewport()) {
             mode = "compact";
@@ -364,14 +394,36 @@ th, td { padding: 0.45rem; }
                 setMode("dense");
             }
         }
+        console.debug("Board scale mode:", mode);
 
-        applyDynamicRowHeights();
-        console.debug("Board scale mode: " + mode);
+        // 2. Gather all rows and reset visibility
+        const allRows = Array.from(document.querySelectorAll("tbody tr"));
+        if (allRows.length === 0) return;
+        allRows.forEach(function (r) { r.style.display = ""; r.style.height = ""; });
+
+        // 3. Compute available height and rows-per-page
+        const available = computeAvailableHeight();
+        const maxRowsPerPage = Math.max(1, Math.floor(available / MIN_ROW_HEIGHT));
+        const rowsPerPage = allRows.length <= maxRowsPerPage ? allRows.length : maxRowsPerPage;
+        const rowHeight = Math.max(MIN_ROW_HEIGHT, Math.min(MAX_ROW_HEIGHT, available / rowsPerPage));
+
+        // 4. Set height on ALL rows so hidden rows maintain size when shown
+        allRows.forEach(function (r) { r.style.height = rowHeight + "px"; });
+
+        // 5. Build pages
+        pages = buildPages(allRows, rowsPerPage);
+        currentPage = 0;
+
+        // 6. Show first page and start timer
+        showPage(currentPage);
+        startPageTimer();
+
+        console.debug("Rows:", allRows.length, "| PerSide:", rowsPerPage, "| Sider:", pages.length, "| RadHoyde:", Math.round(rowHeight), "| Tilgjengelig:", Math.round(available));
     }
 
-    window.addEventListener("load", updateScaleMode);
+    window.addEventListener("load", update);
     window.addEventListener("resize", function () {
-        window.requestAnimationFrame(updateScaleMode);
+        window.requestAnimationFrame(update);
     });
 })();
 </script>
