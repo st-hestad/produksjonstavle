@@ -82,6 +82,10 @@ white-space: pre-wrap;
 word-break: break-word;
 }
 
+tbody tr {
+height: auto;
+}
+
 th {
 position: sticky;
 top: 0;
@@ -205,7 +209,7 @@ th, td { padding: 0.45rem; }
 <div class="screen">
 <div class="header">
 <div class="title">Produksjonstavle Ukeplan</div>
-<div class="meta">tirsdag 26.05.2026 &middot; Uke 22 &middot; Sist oppdatert: 09:38</div>
+<div class="meta">tirsdag 26.05.2026 &middot; Uke 22 &middot; Sist oppdatert: 10:07</div>
 </div>
 
 <div class="board">
@@ -306,10 +310,42 @@ th, td { padding: 0.45rem; }
         return Math.ceil(screen.getBoundingClientRect().height) <= window.innerHeight;
     }
 
-    function applyOverflowFallback() {
+    function applyDynamicRowHeights() {
+        const rows = document.querySelectorAll("tbody tr");
+        if (!rows || rows.length === 0) return;
+
+        const screen = document.querySelector(".screen");
+        const header = document.querySelector(".header");
         const board = document.querySelector(".board");
-        if (!board) return;
-        board.style.overflow = fitsViewport() ? "hidden" : "auto";
+        const tableHead = document.querySelector("thead");
+
+        const viewportHeight = window.innerHeight;
+        const screenStyles = screen ? window.getComputedStyle(screen) : null;
+        const paddingY = screenStyles
+            ? (parseFloat(screenStyles.paddingTop) || 0) + (parseFloat(screenStyles.paddingBottom) || 0)
+            : 0;
+        const headerHeight = header ? Math.ceil(header.getBoundingClientRect().height) : 0;
+        const tableHeadHeight = tableHead ? Math.ceil(tableHead.getBoundingClientRect().height) : 0;
+        const boardPaddingY = board
+            ? ((parseFloat(window.getComputedStyle(board).paddingTop) || 0) + (parseFloat(window.getComputedStyle(board).paddingBottom) || 0))
+            : 0;
+
+        let availableHeight = viewportHeight - headerHeight - tableHeadHeight - paddingY - boardPaddingY;
+
+        if (availableHeight <= 0 && board) {
+            availableHeight = board.clientHeight - tableHeadHeight;
+        }
+
+        const calculatedRowHeight = availableHeight / rows.length;
+        const rowHeight = Math.max(55, Math.min(160, calculatedRowHeight));
+
+        rows.forEach((row) => {
+            row.style.height = rowHeight + "px";
+        });
+
+        console.debug("Rows:", rows.length);
+        console.debug("Available:", Math.round(availableHeight));
+        console.debug("Calculated row height:", Math.round(rowHeight));
     }
 
     function updateScaleMode() {
@@ -325,7 +361,7 @@ th, td { padding: 0.45rem; }
             }
         }
 
-        applyOverflowFallback();
+        applyDynamicRowHeights();
         console.debug("Board scale mode: " + mode);
     }
 
