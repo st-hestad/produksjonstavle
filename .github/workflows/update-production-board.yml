@@ -1,0 +1,29 @@
+name: Update production board
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '*/30 * * * *'
+
+jobs:
+  update-board:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Run production board script
+        shell: pwsh
+        env:
+          LANDAX_BASEURL: ${{ secrets.LANDAX_BASEURL }}
+          LANDAX_USERNAME: ${{ secrets.LANDAX_USERNAME }}
+          LANDAX_PASSWORD: ${{ secrets.LANDAX_PASSWORD }}
+        run: ./01_core/run_board_github.ps1
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add production-board.html github-produksjonstavle/index.html 2>/dev/null || true
+          git diff --cached --quiet || git commit -m "Auto update production board $(date -u '+%Y-%m-%d %H:%M')"
+          git push
