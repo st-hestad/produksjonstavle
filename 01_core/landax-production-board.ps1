@@ -1167,9 +1167,9 @@ return ($groupsHtml -join "")
 $calendar   = [System.Globalization.CultureInfo]::GetCultureInfo("nb-NO").Calendar
 $weekRule   = [System.Globalization.CalendarWeekRule]::FirstFourDayWeek
 $firstDow   = [System.DayOfWeek]::Monday
-$weekNumber = $calendar.GetWeekOfYear((Get-Date), $weekRule, $firstDow)
-$todayLabel = (Get-Date).ToString("dddd dd.MM.yyyy", [System.Globalization.CultureInfo]::GetCultureInfo("nb-NO"))
-$lastUpdated = Get-Date -Format "HH:mm"
+$weekNumber = $calendar.GetWeekOfYear($nowOslo, $weekRule, $firstDow)
+$todayLabel = $nowOslo.ToString("dddd dd.MM.yyyy", [System.Globalization.CultureInfo]::GetCultureInfo("nb-NO"))
+$lastUpdated = $nowOslo.ToString("HH:mm")
 
 $duplicateGroupsBeforeHtml = 0
 $duplicatesRemovedBeforeHtml = 0
