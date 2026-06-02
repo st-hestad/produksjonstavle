@@ -3,7 +3,7 @@ name: Update production board
 on:
   workflow_dispatch:
   schedule:
-    - cron: '*/30 * * * *'
+    - cron: '7,37 * * * *'
 
 jobs:
   update-board:
