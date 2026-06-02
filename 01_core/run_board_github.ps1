@@ -14,12 +14,6 @@ foreach ($var in @("LANDAX_BASEURL", "LANDAX_USERNAME", "LANDAX_PASSWORD")) {
 & (Join-Path $ScriptRoot "landax-production-board.ps1")
 
 $sourceHtml = Join-Path $ProjectRoot "production-board.html"
-$githubRepoPath = Join-Path $ProjectRoot "github-produksjonstavle"
-$targetHtml = Join-Path $githubRepoPath "index.html"
-
-if (Test-Path $githubRepoPath) {
-    Copy-Item -Path $sourceHtml -Destination $targetHtml -Force
-    Write-Host "Kopierte production-board.html til $targetHtml"
-} else {
-    Write-Host "Mappe ikke funnet: $githubRepoPath – hopper over kopiering."
-}
+$targetHtml = Join-Path $ProjectRoot "index.html"
+Copy-Item -Path $sourceHtml -Destination $targetHtml -Force
+Write-Host "Kopierte production-board.html til $targetHtml"
