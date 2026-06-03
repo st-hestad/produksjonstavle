@@ -1,0 +1,367 @@
+<!doctype html>
+<html lang="nb">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="cache-control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="pragma" content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<title>Tripletex → Landax</title>
+<style>
+:root {
+  --bg: #0f172a;
+  --card: #1e293b;
+  --card-2: #223149;
+  --text: #ffffff;
+  --muted: #cbd5e1;
+  --border: rgba(255, 255, 255, 0.10);
+  --ok: #22c55e;
+  --error: #ef4444;
+  --stale: #f59e0b;
+  --shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  width: 100%;
+  min-height: 100%;
+  background:
+    radial-gradient(circle at top left, rgba(59, 130, 246, 0.18), transparent 34%),
+    radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.12), transparent 30%),
+    var(--bg);
+  color: var(--text);
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+}
+
+.shell {
+  width: min(100%, 760px);
+}
+
+.card {
+  width: 100%;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 24%), var(--card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+.topbar {
+  padding: 1rem 1.1rem 0.8rem;
+  background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0));
+  border-bottom: 1px solid var(--border);
+}
+
+.eyebrow {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.title {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.55rem, 2.8vw, 2.25rem);
+  line-height: 1.1;
+  font-weight: 800;
+}
+
+.subtitle {
+  margin: 0.45rem 0 0;
+  color: var(--muted);
+  font-size: 0.98rem;
+}
+
+.content {
+  padding: 1rem 1.1rem 1.15rem;
+  display: grid;
+  gap: 0.85rem;
+}
+
+.status-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  padding: 1rem;
+  background: var(--card-2);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.status-label {
+  font-size: 0.88rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.status-value {
+  margin-top: 0.25rem;
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 900;
+  line-height: 1;
+}
+
+.status-pill {
+  min-width: 96px;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+  border: 1px solid transparent;
+  align-self: flex-start;
+}
+
+.pill-ok { background: rgba(34, 197, 94, 0.16); color: #86efac; border-color: rgba(34, 197, 94, 0.35); }
+.pill-error { background: rgba(239, 68, 68, 0.16); color: #fca5a5; border-color: rgba(239, 68, 68, 0.35); }
+.pill-stale { background: rgba(245, 158, 11, 0.16); color: #fdba74; border-color: rgba(245, 158, 11, 0.35); }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+}
+
+.metric {
+  padding: 0.95rem 1rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+}
+
+.metric-label {
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.metric-value {
+  margin-top: 0.35rem;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  font-weight: 700;
+  word-break: break-word;
+}
+
+.footer {
+  padding: 0 1.1rem 1rem;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.error-note {
+  display: none;
+  margin-top: 0.2rem;
+  color: #fca5a5;
+}
+
+.error-note.visible { display: block; }
+
+@media (max-width: 640px) {
+  .shell { width: 100%; }
+  .card, .status-box, .metric { border-radius: 12px; }
+  .status-box { flex-direction: column; align-items: flex-start; }
+  .status-pill { align-self: stretch; }
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<main class="shell" aria-live="polite">
+  <section class="card">
+    <header class="topbar">
+      <div class="eyebrow">Produksjonstavle</div>
+      <h1 class="title">Tripletex → Landax</h1>
+      <p class="subtitle" id="subtitle">Laster status...</p>
+    </header>
+
+    <div class="content">
+      <section class="status-box">
+        <div>
+          <div class="status-label">Status</div>
+          <div class="status-value" id="statusValue">Laster...</div>
+        </div>
+        <div class="status-pill" id="statusPill">…</div>
+      </section>
+
+      <div class="grid">
+        <div class="metric">
+          <div class="metric-label">Sist kjørt</div>
+          <div class="metric-value" id="lastRunValue">-</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Varighet (sekunder)</div>
+          <div class="metric-value" id="durationValue">-</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Maskin</div>
+          <div class="metric-value" id="hostnameValue">-</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Alder</div>
+          <div class="metric-value" id="ageValue">-</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div id="errorNote" class="error-note"></div>
+      <div>Oppdateres automatisk hvert minutt.</div>
+    </div>
+  </section>
+</main>
+
+<script>
+const STATUS_URL = './tripletex-sync-status.json';
+const POLL_INTERVAL_MS = 60_000;
+const STALE_AFTER_MS = 36 * 60 * 60 * 1000;
+
+const els = {
+  subtitle: document.getElementById('subtitle'),
+  statusValue: document.getElementById('statusValue'),
+  statusPill: document.getElementById('statusPill'),
+  lastRunValue: document.getElementById('lastRunValue'),
+  durationValue: document.getElementById('durationValue'),
+  hostnameValue: document.getElementById('hostnameValue'),
+  ageValue: document.getElementById('ageValue'),
+  errorNote: document.getElementById('errorNote'),
+};
+
+function pad(number) {
+  return String(number).padStart(2, '0');
+}
+
+function formatLocal(date) {
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`;
+}
+
+function parseLocalTimestamp(value) {
+  if (!value || typeof value !== 'string') {
+    return null;
+  }
+
+  const match = value.trim().match(/^(\d{4})-(\d{2})-(\d{2})[ T](\d{2}):(\d{2}):(\d{2})$/);
+  if (!match) {
+    return null;
+  }
+
+  const year = Number(match[1]);
+  const month = Number(match[2]) - 1;
+  const day = Number(match[3]);
+  const hour = Number(match[4]);
+  const minute = Number(match[5]);
+  const second = Number(match[6]);
+  const date = new Date(year, month, day, hour, minute, second);
+
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+function setStatus(state) {
+  const classes = ['pill-ok', 'pill-error', 'pill-stale'];
+  els.statusPill.classList.remove(...classes);
+
+  if (state === 'OK') {
+    els.statusPill.classList.add('pill-ok');
+    els.statusPill.textContent = 'OK';
+    els.statusValue.style.color = 'var(--ok)';
+  } else if (state === 'ERROR') {
+    els.statusPill.classList.add('pill-error');
+    els.statusPill.textContent = 'ERROR';
+    els.statusValue.style.color = 'var(--error)';
+  } else {
+    els.statusPill.classList.add('pill-stale');
+    els.statusPill.textContent = 'STALE';
+    els.statusValue.style.color = 'var(--stale)';
+  }
+
+  els.statusValue.textContent = state;
+}
+
+function setError(message) {
+  els.errorNote.textContent = message;
+  els.errorNote.classList.add('visible');
+}
+
+function clearError() {
+  els.errorNote.textContent = '';
+  els.errorNote.classList.remove('visible');
+}
+
+function render(data) {
+  clearError();
+
+  const lastRun = parseLocalTimestamp(data.lastRun);
+  const now = new Date();
+  const ageMs = lastRun ? now.getTime() - lastRun.getTime() : null;
+  const ageHours = ageMs === null ? null : ageMs / (60 * 60 * 1000);
+  const isStale = ageMs !== null && ageMs > STALE_AFTER_MS;
+
+  let state = typeof data.status === 'string' ? data.status.toUpperCase() : 'ERROR';
+  if (isStale) {
+    state = 'STALE';
+  }
+
+  setStatus(state);
+  els.lastRunValue.textContent = lastRun ? formatLocal(lastRun) : '-';
+  els.durationValue.textContent = Number.isFinite(Number(data.durationSeconds)) ? String(Number(data.durationSeconds)) : '-';
+  els.hostnameValue.textContent = data.hostname || '-';
+
+  if (ageMs === null) {
+    els.ageValue.textContent = '-';
+  } else {
+    const hours = ageHours.toFixed(1).replace('.', ',');
+    els.ageValue.textContent = `${hours} timer`;
+  }
+
+  if (state === 'STALE') {
+    els.subtitle.textContent = 'Statusen er eldre enn 36 timer.';
+  } else {
+    els.subtitle.textContent = `Sist oppdatert lokalt: ${formatLocal(now)}`;
+  }
+
+  if (state === 'ERROR' && data.error) {
+    setError(data.error);
+  } else {
+    clearError();
+  }
+}
+
+async function loadStatus() {
+  try {
+    const response = await fetch(`${STATUS_URL}?v=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) {
+      throw new Error(`Kunne ikke lese statusfilen (${response.status})`);
+    }
+
+    const data = await response.json();
+    render(data);
+  } catch (error) {
+    setStatus('ERROR');
+    els.subtitle.textContent = 'Kunne ikke lese statusfilen.';
+    els.lastRunValue.textContent = '-';
+    els.durationValue.textContent = '-';
+    els.hostnameValue.textContent = '-';
+    els.ageValue.textContent = '-';
+    setError(error instanceof Error ? error.message : String(error));
+  }
+}
+
+loadStatus();
+setInterval(loadStatus, POLL_INTERVAL_MS);
+</script>
+</body>
+</html>
