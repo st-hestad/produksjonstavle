@@ -92,9 +92,9 @@ $page++
 if ($page -gt $maxPages) { break }
 
 $url = if ($endpoint -match '\?') {
-"$landaxBaseUrl/${endpoint}&from=$from&count=$count"
+"$landaxBaseUrl/${endpoint}&`$skip=$from&`$top=$count"
 } else {
-"$landaxBaseUrl/${endpoint}?from=$from&count=$count"
+"$landaxBaseUrl/${endpoint}?`$skip=$from&`$top=$count"
 }
 $resp = Invoke-LandaxGet -url $url -headers $headers
 if ($null -eq $resp) { break }
