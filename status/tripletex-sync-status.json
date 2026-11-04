@@ -1,7 +1,6 @@
 {
-  "status": "ERROR",
-  "lastRun": "2026-11-03 02:11:10",
-  "durationSeconds": 300,
-  "hostname": "mac.lan",
-  "error": "The SSL connection could not be established, see inner exception."
+  "status": "OK",
+  "lastRun": "2026-11-04 02:02:40",
+  "durationSeconds": 156,
+  "hostname": "mac.lan"
 }
