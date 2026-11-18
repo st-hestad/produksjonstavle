@@ -1,7 +1,6 @@
 {
-  "status": "ERROR",
-  "lastRun": "2026-11-17 15:55:27",
-  "durationSeconds": 49575,
-  "hostname": "mac.lan",
-  "error": "Unable to read data from the transport connection: Operation timed out."
+  "status": "OK",
+  "lastRun": "2026-11-18 02:02:51",
+  "durationSeconds": 166,
+  "hostname": "sverresnmini127.lan"
 }
