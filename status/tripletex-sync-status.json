@@ -1,7 +1,6 @@
 {
-  "status": "ERROR",
-  "lastRun": "2026-11-19 08:03:34",
-  "durationSeconds": 107330,
-  "hostname": "mac.lan",
-  "error": "An error occurred while sending the request."
+  "status": "OK",
+  "lastRun": "2026-11-20 02:02:54",
+  "durationSeconds": 169,
+  "hostname": "Sverre-sin-Mac-mini-127.local"
 }
