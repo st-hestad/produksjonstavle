@@ -1,7 +1,6 @@
 {
-  "status": "ERROR",
-  "lastRun": "2026-11-22 02:35:30",
-  "durationSeconds": 1333,
-  "hostname": "mac.lan",
-  "error": "Unable to read data from the transport connection: Connection reset by peer."
+  "status": "OK",
+  "lastRun": "2026-11-23 02:02:55",
+  "durationSeconds": 170,
+  "hostname": "sverresnmini127.lan"
 }
